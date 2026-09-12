@@ -117,7 +117,6 @@ This timer automates steps 2-4, helping you stay productive!
 
 ## Customization Ideas (Future Enhancements)
 
-- 🎨 Dark mode toggle
 - 🔔 Configurable notification sounds
 - 📊 Statistics dashboard (weekly sessions, hours focused)
 - 🎯 Task list integration
