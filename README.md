@@ -154,7 +154,6 @@ This timer automates steps 2-4, helping you stay productive!
 - 🎯 Task list integration
 - ⏱️ Keyboard shortcuts (Space to start/pause, R to reset)
 - 🔔 Browser notifications with permission request
-- 🎵 Background music during work sessions
 - 📱 Progressive Web App (PWA) - installable on home screen
 - 🌐 Cloud sync across devices
 
