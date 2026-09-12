@@ -16,6 +16,7 @@ class PomodoroTimer {
         this.isWorkSession = true; // true for work, false for break
         this.sessionsCompleted = 0;
         this.intervalId = null;
+        this.chimeSound = 'gong'; // Default to warm gong
 
         // DOM Elements
         this.elements = {
@@ -29,6 +30,7 @@ class PomodoroTimer {
             workDurationInput: document.getElementById('workDuration'),
             breakDurationInput: document.getElementById('breakDuration'),
             updateSettingsBtn: document.getElementById('updateSettingsBtn'),
+            chimeSoundSelect: document.getElementById('chimeSound'),
             themeToggle: null,
             themeLabel: null,
         };
@@ -55,6 +57,14 @@ class PomodoroTimer {
         this.elements.pauseBtn.addEventListener('click', () => this.pause());
         this.elements.resetBtn.addEventListener('click', () => this.reset());
         this.elements.updateSettingsBtn.addEventListener('click', () => this.updateSettings());
+        
+        // Chime sound selector with preview
+        if (this.elements.chimeSoundSelect) {
+            this.elements.chimeSoundSelect.addEventListener('change', (e) => {
+                this.chimeSound = e.target.value;
+                this.playChime(); // Play preview
+            });
+        }
         
         // Theme toggle
         if (this.elements.themeToggle) {
@@ -151,15 +161,27 @@ class PomodoroTimer {
     }
 
     /**
-     * Play pleasant ding notification using Web Audio API
+     * Play the selected chime sound
      */
-    playNotification() {
+    playChime() {
+        if (this.chimeSound === 'none') {
+            return; // No sound selected
+        } else if (this.chimeSound === 'gong') {
+            this.playGongChime();
+        } else if (this.chimeSound === 'tada') {
+            this.playTadaChime();
+        }
+    }
+
+    /**
+     * Play warm gong notification using Web Audio API
+     */
+    playGongChime() {
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const now = audioContext.currentTime;
 
             // Create a pleasant ding with harmonics
-            // First tone: fundamental frequency (E4: ~330Hz)
             const playTone = (freq, startTime, duration, gainAmount) => {
                 const osc = audioContext.createOscillator();
                 const gain = audioContext.createGain();
@@ -189,14 +211,69 @@ class PomodoroTimer {
             playTone(196, now + 0.1, 1.2, 0.15); // G3: adds warmth and body
         } catch (e) {
             console.log('Audio notification not available:', e);
-            // Fallback: browser notification
-            if (window.Notification && Notification.permission === 'granted') {
-                new Notification('Pomodoro Timer', {
-                    body: this.isWorkSession ? 'Break time is over! Ready to work?' : 'Work session complete! Time for a break.',
-                    icon: '⏱️',
-                });
-            }
+            this.showBrowserNotification();
         }
+    }
+
+    /**
+     * Play celebratory "Ta Da" chime sound
+     */
+    playTadaChime() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+
+            const playTone = (freq, startTime, duration, gainAmount) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.value = freq;
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(gainAmount, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            };
+
+            // "Ta Da" - celebratory two-note fanfare
+            // First note: high, bright
+            playTone(523.25, now, 0.3, 0.5); // C5: bright high note
+            
+            // Second note: even higher
+            playTone(659.25, now + 0.25, 0.4, 0.6); // E5: even brighter
+            
+            // Third note: resolution back down with harmony
+            playTone(523.25, now + 0.5, 0.5, 0.5); // C5: resolution
+            playTone(659.25, now + 0.5, 0.5, 0.3); // E5: harmony
+        } catch (e) {
+            console.log('Audio notification not available:', e);
+            this.showBrowserNotification();
+        }
+    }
+
+    /**
+     * Show browser notification as fallback
+     */
+    showBrowserNotification() {
+        if (window.Notification && Notification.permission === 'granted') {
+            new Notification('Pomodoro Timer', {
+                body: this.isWorkSession ? 'Break time is over! Ready to work?' : 'Work session complete! Time for a break.',
+                icon: '⏱️',
+            });
+        }
+    }
+
+    /**
+     * Play notification sound on timer completion
+     */
+    playNotification() {
+        this.playChime();
     }
 
     /**
@@ -275,6 +352,7 @@ class PomodoroTimer {
             sessionsCompleted: this.sessionsCompleted,
             workDuration: this.workDuration,
             breakDuration: this.breakDuration,
+            chimeSound: this.chimeSound,
             savedAt: Date.now(),
         };
         localStorage.setItem('pomodoroState', JSON.stringify(state));
@@ -330,6 +408,7 @@ class PomodoroTimer {
                 if (elapsedSeconds < 3600) {
                     this.workDuration = state.workDuration || this.workDuration;
                     this.breakDuration = state.breakDuration || this.breakDuration;
+                    this.chimeSound = state.chimeSound || this.chimeSound;
                     this.isWorkSession = state.isWorkSession;
                     this.sessionsCompleted = state.sessionsCompleted;
                     this.totalDuration = this.isWorkSession ? this.workDuration : this.breakDuration;
@@ -344,6 +423,9 @@ class PomodoroTimer {
                     // Update UI
                     this.elements.workDurationInput.value = this.workDuration / 60;
                     this.elements.breakDurationInput.value = this.breakDuration / 60;
+                    if (this.elements.chimeSoundSelect) {
+                        this.elements.chimeSoundSelect.value = this.chimeSound;
+                    }
                     this.elements.sessionsCompleted.textContent = this.sessionsCompleted;
                 }
             } catch (e) {
