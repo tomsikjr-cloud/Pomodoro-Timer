@@ -29,6 +29,8 @@ class PomodoroTimer {
             workDurationInput: document.getElementById('workDuration'),
             breakDurationInput: document.getElementById('breakDuration'),
             updateSettingsBtn: document.getElementById('updateSettingsBtn'),
+            themeToggle: null,
+            themeLabel: null,
         };
 
         // Initialize
@@ -40,6 +42,7 @@ class PomodoroTimer {
      */
     init() {
         this.loadFromLocalStorage();
+        this.loadTheme();
         this.updateDisplay();
         this.attachEventListeners();
     }
@@ -52,6 +55,11 @@ class PomodoroTimer {
         this.elements.pauseBtn.addEventListener('click', () => this.pause());
         this.elements.resetBtn.addEventListener('click', () => this.reset());
         this.elements.updateSettingsBtn.addEventListener('click', () => this.updateSettings());
+        
+        // Theme toggle
+        if (this.elements.themeToggle) {
+            this.elements.themeToggle.addEventListener('change', () => this.toggleTheme());
+        }
     }
 
     /**
@@ -143,49 +151,45 @@ class PomodoroTimer {
     }
 
     /**
-     * Play notification sound using Web Audio API
+     * Play pleasant ding notification using Web Audio API
      */
     playNotification() {
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            const now = audioContext.currentTime;
 
-            // Connect oscillator to gain node, then to speakers
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            // Create a pleasant ding with harmonics
+            // First tone: fundamental frequency (E4: ~330Hz)
+            const playTone = (freq, startTime, duration, gainAmount) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.value = freq;
+                osc.type = 'sine';
+                
+                // Smooth attack and decay
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(gainAmount, startTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            };
 
-            // Play a pleasant beep: 800Hz frequency, 0.2 second duration
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-
-            // Fade in and out for smooth sound
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
-
-            // Play a second beep for emphasis
-            setTimeout(() => {
-                const osc2 = audioContext.createOscillator();
-                const gain2 = audioContext.createGain();
-                osc2.connect(gain2);
-                gain2.connect(audioContext.destination);
-
-                osc2.frequency.value = 800;
-                osc2.type = 'sine';
-                gain2.gain.setValueAtTime(0, audioContext.currentTime);
-                gain2.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
-                gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-
-                osc2.start(audioContext.currentTime);
-                osc2.stop(audioContext.currentTime + 0.2);
-            }, 250);
+            // Warm Gong - Deep, resonant tone
+            playTone(392, now, 1.3, 0.4); // G4: deep, warm base
+            
+            // Mid-range harmony for richness
+            playTone(294, now + 0.05, 1.1, 0.2); // D4: middle tone
+            
+            // Lower harmony for depth and resonance
+            playTone(196, now + 0.1, 1.2, 0.15); // G3: adds warmth and body
         } catch (e) {
             console.log('Audio notification not available:', e);
-            // Fallback: try browser's beep if available
+            // Fallback: browser notification
             if (window.Notification && Notification.permission === 'granted') {
                 new Notification('Pomodoro Timer', {
                     body: this.isWorkSession ? 'Break time is over! Ready to work?' : 'Work session complete! Time for a break.',
@@ -216,15 +220,17 @@ class PomodoroTimer {
 
         this.elements.timerDisplay.textContent = timeString;
 
-        // Update session label and background color
+        // Update session label and mode - PRESERVE THEME CLASS
+        const hasIndustrialTheme = document.body.classList.contains('industrial-theme');
+        
         if (this.isWorkSession) {
             this.elements.sessionLabel.textContent = '💼 Work Session';
             this.elements.sessionLabel.className = 'session-label work';
-            document.body.className = 'work-mode';
+            document.body.className = hasIndustrialTheme ? 'industrial-theme work-mode' : 'work-mode';
         } else {
             this.elements.sessionLabel.textContent = '☕ Break Time';
             this.elements.sessionLabel.className = 'session-label break';
-            document.body.className = 'break-mode';
+            document.body.className = hasIndustrialTheme ? 'industrial-theme break-mode' : 'break-mode';
         }
 
         // Update progress bar
@@ -272,6 +278,42 @@ class PomodoroTimer {
             savedAt: Date.now(),
         };
         localStorage.setItem('pomodoroState', JSON.stringify(state));
+    }
+
+    /**
+     * Load theme from localStorage and apply it
+     */
+    loadTheme() {
+        // Get theme toggle elements
+        this.elements.themeToggle = document.getElementById('themeToggle');
+        this.elements.themeLabel = document.querySelector('.theme-label');
+        
+        const savedTheme = localStorage.getItem('pomodoroTheme') || 'basic';
+        if (savedTheme === 'industrial') {
+            if (this.elements.themeToggle) this.elements.themeToggle.checked = true;
+            document.body.className = 'industrial-theme';
+            if (this.elements.themeLabel) this.elements.themeLabel.textContent = 'Industrial';
+        } else {
+            if (this.elements.themeToggle) this.elements.themeToggle.checked = false;
+            document.body.className = '';
+            if (this.elements.themeLabel) this.elements.themeLabel.textContent = 'Normal';
+        }
+    }
+
+    /**
+     * Toggle between basic and industrial theme
+     */
+    toggleTheme() {
+        const isIndustrial = this.elements.themeToggle.checked;
+        const newTheme = isIndustrial ? 'industrial' : 'basic';
+        
+        document.body.className = isIndustrial ? 'industrial-theme' : '';
+        localStorage.setItem('pomodoroTheme', newTheme);
+        
+        // Update label
+        if (this.elements.themeLabel) {
+            this.elements.themeLabel.textContent = isIndustrial ? 'Industrial' : 'Normal';
+        }
     }
 
     /**

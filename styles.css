@@ -27,10 +27,102 @@ body {
     transition: all 0.5s ease;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 header h1 {
     color: #333;
-    margin-bottom: 30px;
     font-size: 2.5rem;
+    margin: 0;
+}
+
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.slider {
+    width: 50px;
+    height: 28px;
+    background-color: #bbb;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.slider::before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-checkbox:checked + .slider {
+    background-color: #667eea;
+}
+
+.toggle-checkbox:checked + .slider::before {
+    transform: translateX(22px);
+}
+
+.theme-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    min-width: 60px;
+    transition: all 0.3s ease;
+}
+
+/* Industrial Theme Toggle Switch */
+body.industrial-theme .toggle-switch {
+    opacity: 0.9;
+}
+
+body.industrial-theme .slider {
+    background-color: rgba(100, 120, 150, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+}
+
+body.industrial-theme .toggle-checkbox:checked + .slider {
+    background-color: #667eea;
+    box-shadow: 0 0 10px rgba(100, 200, 255, 0.4);
+}
+
+body.industrial-theme .theme-label {
+    color: #64c8ff;
 }
 
 /* Main Timer Section */
@@ -260,9 +352,215 @@ body.break-mode {
 }
 
 /* Responsive Design */
+/* Industrial Theme - Blade Runner Cyberpunk LED Aesthetic */
+body.industrial-theme {
+    background: linear-gradient(135deg, #0f0f14 0%, #1a1a24 30%, #0d0d12 70%, #161620 100%);
+}
+
+body.industrial-theme .container {
+    background: linear-gradient(135deg, 
+        rgba(24, 24, 32, 0.95) 0%, 
+        rgba(18, 22, 32, 0.97) 50%, 
+        rgba(20, 18, 30, 0.95) 100%);
+    border: 2px solid rgba(150, 180, 200, 0.25);
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 50px rgba(0, 200, 255, 0.1),
+        0 0 80px rgba(100, 150, 200, 0.05),
+        0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+body.industrial-theme header h1 {
+    color: #b0d0e8;
+    text-shadow: 
+        0 0 10px rgba(100, 180, 220, 0.4),
+        0 0 20px rgba(50, 100, 150, 0.2);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.15em;
+    font-weight: 300;
+}
+
+body.industrial-theme .session-label {
+    border: 1px solid rgba(120, 160, 200, 0.4);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(135deg, rgba(30, 30, 45, 0.8) 0%, rgba(25, 25, 40, 0.8) 100%);
+}
+
+body.industrial-theme .session-label.work {
+    background: linear-gradient(135deg, rgba(180, 60, 60, 0.7) 0%, rgba(100, 30, 30, 0.7) 100%);
+    border-color: rgba(220, 100, 100, 0.5);
+    color: #ffb3b3;
+    text-shadow: 0 0 12px rgba(255, 100, 100, 0.3);
+}
+
+body.industrial-theme .session-label.break {
+    background: linear-gradient(135deg, rgba(60, 140, 100, 0.7) 0%, rgba(30, 90, 60, 0.7) 100%);
+    border-color: rgba(100, 200, 150, 0.5);
+    color: #b3e5cc;
+    text-shadow: 0 0 12px rgba(100, 220, 150, 0.3);
+}
+
+body.industrial-theme .timer-display {
+    color: #9bc4d8;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-shadow: 
+        0 0 8px rgba(100, 180, 220, 0.3),
+        0 0 20px rgba(50, 100, 150, 0.15),
+        0 0 40px rgba(0, 100, 150, 0.1);
+}
+
+body.industrial-theme .progress-bar {
+    background: linear-gradient(90deg, rgba(30, 40, 60, 0.6) 0%, rgba(25, 35, 55, 0.6) 100%);
+    border: 1px solid rgba(100, 150, 180, 0.3);
+    box-shadow: 
+        inset 0 0 15px rgba(0, 0, 0, 0.6),
+        inset 0 0 5px rgba(100, 180, 220, 0.1);
+}
+
+body.industrial-theme .progress-fill {
+    background: linear-gradient(90deg, 
+        rgba(100, 180, 220, 0.7) 0%, 
+        rgba(80, 160, 200, 0.8) 50%, 
+        rgba(100, 180, 220, 0.7) 100%);
+    box-shadow: 
+        0 0 10px rgba(100, 180, 220, 0.5),
+        inset 0 1px 0 rgba(200, 240, 255, 0.3);
+}
+
+body.industrial-theme .btn {
+    border: 1px solid rgba(120, 160, 200, 0.4);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+    box-shadow: 
+        0 0 12px rgba(100, 150, 200, 0.15),
+        inset 0 1px 0 rgba(200, 220, 240, 0.1),
+        0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+}
+
+body.industrial-theme .btn-start {
+    background: linear-gradient(135deg, 
+        rgba(70, 140, 100, 0.75) 0%, 
+        rgba(40, 100, 70, 0.75) 100%);
+    color: #a8d5b8;
+    border-color: rgba(100, 200, 150, 0.5);
+}
+
+body.industrial-theme .btn-start:hover:not(:disabled) {
+    background: linear-gradient(135deg, 
+        rgba(90, 160, 120, 0.85) 0%, 
+        rgba(60, 120, 90, 0.85) 100%);
+    box-shadow: 
+        0 0 20px rgba(100, 200, 150, 0.4),
+        inset 0 1px 0 rgba(200, 240, 200, 0.2),
+        0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.industrial-theme .btn-pause {
+    background: linear-gradient(135deg, 
+        rgba(160, 120, 40, 0.75) 0%, 
+        rgba(110, 80, 20, 0.75) 100%);
+    color: #e5d5a8;
+    border-color: rgba(200, 160, 80, 0.5);
+}
+
+body.industrial-theme .btn-pause:hover:not(:disabled) {
+    background: linear-gradient(135deg, 
+        rgba(180, 140, 60, 0.85) 0%, 
+        rgba(130, 100, 40, 0.85) 100%);
+    box-shadow: 
+        0 0 20px rgba(200, 160, 80, 0.4),
+        inset 0 1px 0 rgba(240, 220, 160, 0.2),
+        0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.industrial-theme .btn-reset {
+    background: linear-gradient(135deg, 
+        rgba(160, 70, 70, 0.75) 0%, 
+        rgba(110, 40, 40, 0.75) 100%);
+    color: #e5b8b8;
+    border-color: rgba(220, 100, 100, 0.5);
+}
+
+body.industrial-theme .btn-reset:hover:not(:disabled) {
+    background: linear-gradient(135deg, 
+        rgba(180, 90, 90, 0.85) 0%, 
+        rgba(130, 60, 60, 0.85) 100%);
+    box-shadow: 
+        0 0 20px rgba(220, 100, 100, 0.4),
+        inset 0 1px 0 rgba(240, 180, 180, 0.2),
+        0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.industrial-theme .session-counter {
+    color: rgba(150, 180, 200, 0.8);
+}
+
+body.industrial-theme .session-counter span {
+    color: #b8d8e8;
+    text-shadow: 0 0 8px rgba(100, 180, 220, 0.25);
+}
+
+body.industrial-theme .settings-section {
+    border-top: 1px solid rgba(100, 150, 180, 0.25);
+}
+
+body.industrial-theme .settings-section summary {
+    color: #a0c8d8;
+}
+
+body.industrial-theme .settings-section summary:hover {
+    color: #b8d8e8;
+    text-shadow: 0 0 8px rgba(100, 180, 220, 0.3);
+}
+
+body.industrial-theme .setting-item label {
+    color: rgba(150, 180, 200, 0.85);
+}
+
+body.industrial-theme .setting-item input {
+    background-color: rgba(20, 28, 40, 0.9);
+    border: 1px solid rgba(100, 150, 180, 0.3);
+    color: #a8d0e0;
+}
+
+body.industrial-theme .setting-item input:focus {
+    border-color: rgba(120, 170, 200, 0.6);
+    background-color: rgba(25, 35, 50, 0.95);
+    box-shadow: 
+        inset 0 0 8px rgba(100, 180, 220, 0.15),
+        0 0 12px rgba(100, 180, 220, 0.2);
+}
+
+body.industrial-theme .btn-update-settings {
+    background: linear-gradient(135deg, 
+        rgba(100, 150, 180, 0.65) 0%, 
+        rgba(80, 130, 160, 0.65) 100%);
+    border: 1px solid rgba(120, 160, 200, 0.4);
+    color: #d0e0f0;
+}
+
+body.industrial-theme .btn-update-settings:hover:not(:disabled) {
+    background: linear-gradient(135deg, 
+        rgba(120, 170, 200, 0.75) 0%, 
+        rgba(100, 150, 180, 0.75) 100%);
+    box-shadow: 
+        0 0 18px rgba(100, 180, 220, 0.35),
+        inset 0 1px 0 rgba(220, 240, 255, 0.15);
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 30px 20px;
+    }
+
+    .header-top {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .theme-label {
+        min-width: 50px;
     }
 
     header h1 {
