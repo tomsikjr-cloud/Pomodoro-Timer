@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pomodoro Timer</h1>
+        </header>
+
+        <main class="timer-section">
+            <!-- Session indicator -->
+            <div class="session-label" id="sessionLabel">Work Session</div>
+
+            <!-- Timer display -->
+            <div class="timer-display" id="timerDisplay">25:00</div>
+
+            <!-- Progress bar (visual feedback) -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Control buttons -->
+            <div class="button-group">
+                <button class="btn btn-start" id="startBtn">Start</button>
+                <button class="btn btn-pause" id="pauseBtn" disabled>Pause</button>
+                <button class="btn btn-reset" id="resetBtn">Reset</button>
+            </div>
+
+            <!-- Session counter -->
+            <div class="session-counter">
+                <p>Sessions Completed: <span id="sessionsCompleted">0</span></p>
+            </div>
+        </main>
+
+        <!-- Optional settings panel (hidden by default) -->
+        <footer class="settings-section">
+            <details>
+                <summary>Settings</summary>
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <label for="workDuration">Work Duration (minutes):</label>
+                        <input type="number" id="workDuration" min="1" max="60" value="25">
+                    </div>
+                    <div class="setting-item">
+                        <label for="breakDuration">Break Duration (minutes):</label>
+                        <input type="number" id="breakDuration" min="1" max="30" value="5">
+                    </div>
+                    <button class="btn btn-update-settings" id="updateSettingsBtn">Apply Settings</button>
+                </div>
+            </details>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
