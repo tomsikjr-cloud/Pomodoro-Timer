@@ -7,7 +7,8 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 ✅ **25-Minute Work Sessions & 5-Minute Breaks** - Classic Pomodoro timing  
 ✅ **Start/Pause/Reset Controls** - Full control over your timer  
 ✅ **Visual Feedback** - Color transitions and progress bar (red for work, green for break)  
-✅ **Audio Notification** - Pleasant beep sound when timer completes  
+✅ **Audio Notification** - Warm, resonant gong sound when timer completes  
+✅ **Theme Toggle** - Switch between Normal (purple) and Industrial (dark cyberpunk) themes  
 ✅ **Session Counter** - Track how many Pomodoros you've completed  
 ✅ **Progress Bar** - Visual indicator of time remaining  
 ✅ **Custom Durations** - Adjust work and break times in settings  
@@ -31,6 +32,7 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 - **Start Button** - Begin the timer countdown
 - **Pause Button** - Pause without losing progress (enabled when timer is running)
 - **Reset Button** - Return to the initial state (25:00 for work session)
+- **Theme Toggle** - Switch between Normal (clean purple) and Industrial (dark cyberpunk) themes in the header
 
 ### Settings
 
@@ -47,9 +49,10 @@ Your settings and timer progress are automatically saved to your browser's local
 
 ```
 Pomodoro Timer/
-├── index.html        # HTML structure and layout
-├── styles.css        # Styling and animations
+├── index.html        # Main timer application
+├── styles.css        # Styling for both Normal and Industrial themes
 ├── script.js         # Timer logic and event handlers
+├── test-ding.html    # Sound testing utility (separate from main app)
 └── README.md         # This file
 ```
 
@@ -90,9 +93,16 @@ This timer automates steps 2-4, helping you stay productive!
 - **Pulse Animation** - Timer pulses when session ends for emphasis
 
 ### Audio Feedback
-- **Notification Beep** - Pleasant 800Hz tone plays when timer completes
-- **Two Beeps** - Double beep for extra emphasis
+- **Warm Gong Notification** - Deep, resonant three-part harmonic tone (G4 + D4 + G3)
+- **Pleasant & Soothing** - Lower frequencies create a warm, bell-like sound
 - **Graceful Fallback** - Uses browser notifications if audio unavailable
+- **Sound Testing** - Use `test-ding.html` to preview the notification sound (no 25-minute wait needed!)
+
+### Theme Customization
+- **Normal Theme** - Clean, modern purple gradient design for a fresh look
+- **Industrial Theme** - Dark Blade Runner cyberpunk aesthetic with muted teals, subtle glows, and semi-transparent containers
+- **Theme Persistence** - Your theme choice is saved to localStorage
+- **Dynamic Colors** - Work sessions show red, breaks show green (works in both themes)
 
 ### Session Persistence
 - **LocalStorage** - Timer state automatically saved every second
