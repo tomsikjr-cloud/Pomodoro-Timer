@@ -327,7 +327,23 @@ body.industrial-theme .theme-label {
     transition: border-color 0.3s ease;
 }
 
+.setting-item select {
+    flex: 0.5;
+    padding: 8px 10px;
+    font-size: 1rem;
+    border: 2px solid #ecf0f1;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+    background-color: white;
+    cursor: pointer;
+}
+
 .setting-item input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.setting-item select:focus {
     outline: none;
     border-color: #667eea;
 }

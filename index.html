@@ -59,6 +59,14 @@
                         <label for="breakDuration">Break Duration (minutes):</label>
                         <input type="number" id="breakDuration" min="1" max="30" value="5">
                     </div>
+                    <div class="setting-item">
+                        <label for="chimeSound">Chime Sound:</label>
+                        <select id="chimeSound">
+                            <option value="none">No Sound</option>
+                            <option value="gong" selected>Warm Gong</option>
+                            <option value="tada">Ta Da</option>
+                        </select>
+                    </div>
                     <button class="btn btn-update-settings" id="updateSettingsBtn">Apply Settings</button>
                 </div>
             </details>

@@ -7,7 +7,7 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 ✅ **25-Minute Work Sessions & 5-Minute Breaks** - Classic Pomodoro timing  
 ✅ **Start/Pause/Reset Controls** - Full control over your timer  
 ✅ **Visual Feedback** - Color transitions and progress bar (red for work, green for break)  
-✅ **Audio Notification** - Warm, resonant gong sound when timer completes  
+✅ **Customizable Chime Sounds** - Choose between No Sound, Warm Gong, or Ta Da notification  
 ✅ **Theme Toggle** - Switch between Normal (purple) and Industrial (dark cyberpunk) themes  
 ✅ **Session Counter** - Track how many Pomodoros you've completed  
 ✅ **Progress Bar** - Visual indicator of time remaining  
@@ -39,6 +39,11 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 Click the **Settings** dropdown to:
 - Change work session duration (default: 25 minutes)
 - Change break duration (default: 5 minutes)
+- **Select Chime Sound** - Choose your notification sound:
+  - **No Sound** - Silent operation (timer still shows visual feedback)
+  - **Warm Gong** (default) - Deep, resonant three-part harmonic tone
+  - **Ta Da** - Celebratory two-note fanfare
+  - *Hear a preview immediately when you change the selection!*
 - Click **Apply Settings** to save changes
 
 Your settings and timer progress are automatically saved to your browser's local storage.
@@ -92,11 +97,13 @@ This timer automates steps 2-4, helping you stay productive!
 - **Progress Bar** - Visual representation of time remaining
 - **Pulse Animation** - Timer pulses when session ends for emphasis
 
-### Audio Feedback
-- **Warm Gong Notification** - Deep, resonant three-part harmonic tone (G4 + D4 + G3)
-- **Pleasant & Soothing** - Lower frequencies create a warm, bell-like sound
+### Audio Feedback (Customizable Chimes)
+- **No Sound** - Silent mode for when you need to stay unnoticed
+- **Warm Gong Notification** - Deep, resonant three-part harmonic tone (G4 + D4 + G3) - creates a warm, bell-like sound
+- **Ta Da Celebration** - Uplifting two-note fanfare (C5 → E5 → C5+E5) for a celebratory feel
+- **Sound Preview** - Hear your selection immediately when changing the setting in the dropdown
 - **Graceful Fallback** - Uses browser notifications if audio unavailable
-- **Sound Testing** - Use `test-ding.html` to preview the notification sound (no 25-minute wait needed!)
+- **Sound Testing** - Use `test-ding.html` to preview all notification sounds (no 25-minute wait needed!)
 
 ### Theme Customization
 - **Normal Theme** - Clean, modern purple gradient design for a fresh look
@@ -114,6 +121,32 @@ This timer automates steps 2-4, helping you stay productive!
 - Works on phones, tablets, and desktops
 - Auto-adjusts font sizes and button layout on smaller screens
 - Touch-friendly button sizes for mobile users
+
+## Version History
+
+### v0.3 - Customizable Chime Sounds ✨ (Current)
+- **New Feature**: Customizable chime sounds dropdown in settings
+  - No Sound - Silent operation option
+  - Warm Gong - Original resonant gong (default)
+  - Ta Da - Celebratory two-note fanfare
+- **New Feature**: Sound preview plays immediately when selection changes
+- **Improved**: Better organized settings panel
+- **Improved**: Enhanced documentation
+
+### v0.2 - Theme System
+- Implemented Normal and Industrial theme toggle
+- Industrial theme with cyberpunk aesthetic
+- Theme persistence via localStorage
+- Dynamic color coding for work/break sessions
+
+### v0.1 - Core Functionality
+- Basic Pomodoro timer (25 min work, 5 min break)
+- Start/Pause/Reset controls
+- Session counter
+- Progress bar with visual feedback
+- Warm gong notification sound
+- Custom duration settings
+- State persistence with localStorage
 
 ## Customization Ideas (Future Enhancements)
 
