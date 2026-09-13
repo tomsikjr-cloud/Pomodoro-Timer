@@ -9,6 +9,7 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 ✅ **Visual Feedback** - Color transitions and progress bar (red for work, green for break)  
 ✅ **Customizable Chime Sounds** - Choose between No Sound, Warm Gong, or Ta Da notification  
 ✅ **Theme Toggle** - Switch between Normal (purple) and Industrial (dark cyberpunk) themes  
+✅ **To Do List** - Five editable tasks with completion checkboxes and delete buttons inside the timer  
 ✅ **Session Counter** - Track how many Pomodoros you've completed  
 ✅ **Progress Bar** - Visual indicator of time remaining  
 ✅ **Custom Durations** - Adjust work and break times in settings  
@@ -33,6 +34,7 @@ A simple, beautiful web-based Pomodoro Timer to boost productivity and manage yo
 - **Pause Button** - Pause without losing progress (enabled when timer is running)
 - **Reset Button** - Return to the initial state (25:00 for work session)
 - **Theme Toggle** - Switch between Normal (clean purple) and Industrial (dark cyberpunk) themes in the header
+- **To Do** - Type five tasks, check them off, or delete an item with the x button to shift the list up
 
 ### Settings
 
@@ -103,13 +105,19 @@ This timer automates steps 2-4, helping you stay productive!
 - **Ta Da Celebration** - Uplifting two-note fanfare (C5 → E5 → C5+E5) for a celebratory feel
 - **Sound Preview** - Hear your selection immediately when changing the setting in the dropdown
 - **Graceful Fallback** - Uses browser notifications if audio unavailable
-- **Sound Testing** - Use `test-ding.html` to preview all notification sounds (no 25-minute wait needed!)
 
 ### Theme Customization
 - **Normal Theme** - Clean, modern purple gradient design for a fresh look
 - **Industrial Theme** - Dark Blade Runner cyberpunk aesthetic with muted teals, subtle glows, and semi-transparent containers
 - **Theme Persistence** - Your theme choice is saved to localStorage
 - **Dynamic Colors** - Work sessions show red, breaks show green (works in both themes)
+
+### To Do List
+- **Five Editable Fields** - Type the tasks you want to finish during the current session
+- **Completion Checkboxes** - Mark tasks complete for a small sense of accomplishment
+- **Delete Buttons** - Remove an item with the x button and the remaining tasks shift up automatically
+- **Persistent State** - Your to-do list text and checkmarks are saved with the timer
+- **Visual Feedback** - Completed tasks get a checked/completed style so progress is easy to see
 
 ### Session Persistence
 - **LocalStorage** - Timer state automatically saved every second
@@ -124,7 +132,14 @@ This timer automates steps 2-4, helping you stay productive!
 
 ## Version History
 
-### v0.3 - Customizable Chime Sounds ✨ (Current)
+### v0.4 - To Do List ✨ (Current)
+- **New Feature**: Five to-do inputs inside the timer
+- **New Feature**: Checkboxes next to each task for completion tracking
+- **New Feature**: Per-item x buttons to delete a task and shift the remaining items up
+- **New Feature**: Completed tasks are saved and restored with the timer state
+- **Improved**: Updated README and layout to match the new session workflow
+
+### v0.3 - Customizable Chime Sounds
 - **New Feature**: Customizable chime sounds dropdown in settings
   - No Sound - Silent operation option
   - Warm Gong - Original resonant gong (default)
@@ -151,7 +166,6 @@ This timer automates steps 2-4, helping you stay productive!
 ## Customization Ideas (Future Enhancements)
 
 - 📊 Statistics dashboard (weekly sessions, hours focused)
-- 🎯 Task list integration
 - ⏱️ Keyboard shortcuts (Space to start/pause, R to reset)
 - 🔔 Browser notifications with permission request
 - 📱 Progressive Web App (PWA) - installable on home screen

@@ -29,7 +29,7 @@ body {
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
@@ -37,8 +37,10 @@ header {
 
 .header-top {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
     width: 100%;
 }
 
@@ -46,12 +48,17 @@ header h1 {
     color: #333;
     font-size: 2.5rem;
     margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1.1;
 }
 
 .theme-switcher {
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: center;
+    width: 100%;
 }
 
 .toggle-switch {
@@ -134,11 +141,12 @@ body.industrial-theme .theme-label {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 20px;
-    height: 2.5rem;
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
+    border: 1px solid transparent;
     border-radius: 10px;
     transition: all 0.5s ease;
 }
@@ -155,13 +163,13 @@ body.industrial-theme .theme-label {
 
 /* Timer Display */
 .timer-display {
-    font-size: 6rem;
+    font-size: 5rem;
     font-weight: bold;
     color: #333;
     margin: 30px 0;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.1em;
-    font-family: 'Courier New', monospace;
+    font-family: inherit;
     transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
@@ -212,7 +220,9 @@ body.industrial-theme .theme-label {
     padding: 12px 30px;
     font-size: 1.1rem;
     font-weight: 600;
-    border: none;
+    line-height: 1;
+    min-height: 44px;
+    border: 1px solid transparent;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -273,6 +283,99 @@ body.industrial-theme .theme-label {
 .session-counter span {
     font-weight: 700;
     color: #333;
+}
+
+/* Session To Do List */
+.todo-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #ecf0f1;
+    text-align: left;
+}
+
+.todo-section h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: #f8f9fb;
+    border: 1px solid #ecf0f1;
+    transition: all 0.3s ease;
+}
+
+.todo-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.todo-input {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 0.98rem;
+    border: 1px solid #dfe6e9;
+    border-radius: 6px;
+    color: #333;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.todo-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.12);
+}
+
+.todo-input.completed {
+    text-decoration: line-through;
+    color: #8e9aa5;
+    background-color: #f3f5f7;
+}
+
+.todo-delete-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(231, 76, 60, 0.12);
+    color: #e74c3c;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: all 0.25s ease;
+}
+
+.todo-delete-btn:hover {
+    background-color: rgba(231, 76, 60, 0.22);
+    transform: scale(1.05);
+}
+
+.todo-delete-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.18);
+}
+
+.todo-item.completed {
+    background-color: #eefaf1;
+    border-color: #c9e9d4;
 }
 
 /* Settings Section */
@@ -391,13 +494,10 @@ body.industrial-theme header h1 {
     text-shadow: 
         0 0 10px rgba(100, 180, 220, 0.4),
         0 0 20px rgba(50, 100, 150, 0.2);
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0.15em;
-    font-weight: 300;
 }
 
 body.industrial-theme .session-label {
-    border: 1px solid rgba(120, 160, 200, 0.4);
+    border-color: rgba(120, 160, 200, 0.4);
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
     background: linear-gradient(135deg, rgba(30, 30, 45, 0.8) 0%, rgba(25, 25, 40, 0.8) 100%);
 }
@@ -418,8 +518,6 @@ body.industrial-theme .session-label.break {
 
 body.industrial-theme .timer-display {
     color: #9bc4d8;
-    font-weight: 300;
-    letter-spacing: 0.05em;
     text-shadow: 
         0 0 8px rgba(100, 180, 220, 0.3),
         0 0 20px rgba(50, 100, 150, 0.15),
@@ -445,7 +543,7 @@ body.industrial-theme .progress-fill {
 }
 
 body.industrial-theme .btn {
-    border: 1px solid rgba(120, 160, 200, 0.4);
+    border-color: rgba(120, 160, 200, 0.4);
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
     box-shadow: 
         0 0 12px rgba(100, 150, 200, 0.15),
@@ -459,7 +557,6 @@ body.industrial-theme .btn-start {
         rgba(70, 140, 100, 0.75) 0%, 
         rgba(40, 100, 70, 0.75) 100%);
     color: #a8d5b8;
-    border-color: rgba(100, 200, 150, 0.5);
 }
 
 body.industrial-theme .btn-start:hover:not(:disabled) {
@@ -477,7 +574,6 @@ body.industrial-theme .btn-pause {
         rgba(160, 120, 40, 0.75) 0%, 
         rgba(110, 80, 20, 0.75) 100%);
     color: #e5d5a8;
-    border-color: rgba(200, 160, 80, 0.5);
 }
 
 body.industrial-theme .btn-pause:hover:not(:disabled) {
@@ -495,7 +591,6 @@ body.industrial-theme .btn-reset {
         rgba(160, 70, 70, 0.75) 0%, 
         rgba(110, 40, 40, 0.75) 100%);
     color: #e5b8b8;
-    border-color: rgba(220, 100, 100, 0.5);
 }
 
 body.industrial-theme .btn-reset:hover:not(:disabled) {
@@ -515,6 +610,60 @@ body.industrial-theme .session-counter {
 body.industrial-theme .session-counter span {
     color: #b8d8e8;
     text-shadow: 0 0 8px rgba(100, 180, 220, 0.25);
+}
+
+body.industrial-theme .todo-section {
+    border-top: 1px solid rgba(100, 150, 180, 0.25);
+}
+
+body.industrial-theme .todo-section h2 {
+    color: #b0d0e8;
+    text-shadow: 0 0 10px rgba(100, 180, 220, 0.25);
+}
+
+body.industrial-theme .todo-item {
+    background: linear-gradient(135deg, rgba(22, 28, 40, 0.92) 0%, rgba(18, 24, 36, 0.92) 100%);
+    border-color: rgba(100, 150, 180, 0.25);
+}
+
+body.industrial-theme .todo-checkbox {
+    accent-color: #7fc7e8;
+}
+
+body.industrial-theme .todo-input {
+    background-color: rgba(12, 18, 28, 0.95);
+    border: 1px solid rgba(100, 150, 180, 0.3);
+    color: #c2d8e8;
+}
+
+body.industrial-theme .todo-input:focus {
+    border-color: rgba(120, 180, 220, 0.55);
+    box-shadow: 0 0 0 2px rgba(100, 180, 220, 0.15);
+}
+
+body.industrial-theme .todo-input.completed {
+    color: rgba(150, 180, 200, 0.7);
+    background-color: rgba(10, 16, 24, 0.96);
+}
+
+body.industrial-theme .todo-delete-btn {
+    background-color: rgba(180, 70, 70, 0.12);
+    color: #ffb3b3;
+    border: 1px solid rgba(220, 100, 100, 0.25);
+}
+
+body.industrial-theme .todo-delete-btn:hover {
+    background-color: rgba(180, 70, 70, 0.25);
+    box-shadow: 0 0 12px rgba(220, 100, 100, 0.2);
+}
+
+body.industrial-theme .todo-delete-btn:focus {
+    box-shadow: 0 0 0 2px rgba(220, 100, 100, 0.2);
+}
+
+body.industrial-theme .todo-item.completed {
+    background: linear-gradient(135deg, rgba(18, 34, 30, 0.95) 0%, rgba(14, 28, 24, 0.95) 100%);
+    border-color: rgba(100, 200, 150, 0.25);
 }
 
 body.industrial-theme .settings-section {
@@ -575,6 +724,10 @@ body.industrial-theme .btn-update-settings:hover:not(:disabled) {
         gap: 15px;
     }
 
+    header h1 {
+        white-space: normal;
+    }
+
     .theme-label {
         min-width: 50px;
     }
@@ -584,12 +737,13 @@ body.industrial-theme .btn-update-settings:hover:not(:disabled) {
     }
 
     .timer-display {
-        font-size: 4rem;
+        font-size: 3.7rem;
     }
 
     .btn {
         padding: 10px 20px;
         font-size: 0.95rem;
+        min-height: 44px;
     }
 
     .button-group {
@@ -620,9 +774,26 @@ body.industrial-theme .btn-update-settings:hover:not(:disabled) {
         padding: 8px 15px;
         font-size: 0.85rem;
         flex: 1;
+        min-height: 44px;
     }
 
     .button-group {
         gap: 8px;
+    }
+
+    .todo-item {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .todo-input {
+        font-size: 0.92rem;
+        padding: 7px 8px;
+    }
+
+    .todo-delete-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
     }
 }
