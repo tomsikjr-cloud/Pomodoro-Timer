@@ -27,6 +27,10 @@ class PomodoroTimer {
             resetBtn: document.getElementById('resetBtn'),
             progressFill: document.getElementById('progressFill'),
             sessionsCompleted: document.getElementById('sessionsCompleted'),
+            todoItems: Array.from(document.querySelectorAll('.todo-item')),
+            todoInputs: Array.from(document.querySelectorAll('.todo-input')),
+            todoCheckboxes: Array.from(document.querySelectorAll('.todo-checkbox')),
+            todoDeleteButtons: Array.from(document.querySelectorAll('.todo-delete-btn')),
             workDurationInput: document.getElementById('workDuration'),
             breakDurationInput: document.getElementById('breakDuration'),
             updateSettingsBtn: document.getElementById('updateSettingsBtn'),
@@ -57,6 +61,8 @@ class PomodoroTimer {
         this.elements.pauseBtn.addEventListener('click', () => this.pause());
         this.elements.resetBtn.addEventListener('click', () => this.reset());
         this.elements.updateSettingsBtn.addEventListener('click', () => this.updateSettings());
+
+        this.attachTodoEventListeners();
         
         // Chime sound selector with preview
         if (this.elements.chimeSoundSelect) {
@@ -70,6 +76,94 @@ class PomodoroTimer {
         if (this.elements.themeToggle) {
             this.elements.themeToggle.addEventListener('change', () => this.toggleTheme());
         }
+    }
+
+    /**
+     * Attach event listeners for the session to do list
+     */
+    attachTodoEventListeners() {
+        this.elements.todoInputs.forEach((input) => {
+            input.addEventListener('input', () => this.saveToLocalStorage());
+        });
+
+        this.elements.todoCheckboxes.forEach((checkbox, index) => {
+            checkbox.addEventListener('change', () => {
+                this.updateTodoItemVisual(index);
+                this.saveToLocalStorage();
+            });
+        });
+
+        this.elements.todoDeleteButtons.forEach((button, index) => {
+            button.addEventListener('click', () => this.deleteTodoItem(index));
+        });
+    }
+
+    /**
+     * Update the visual state of a single todo item
+     */
+    updateTodoItemVisual(index) {
+        const item = this.elements.todoItems[index];
+        const input = this.elements.todoInputs[index];
+        const checkbox = this.elements.todoCheckboxes[index];
+
+        if (!item || !input || !checkbox) {
+            return;
+        }
+
+        item.classList.toggle('completed', checkbox.checked);
+        input.classList.toggle('completed', checkbox.checked);
+    }
+
+    /**
+     * Delete a todo item and shift remaining items up
+     */
+    deleteTodoItem(index) {
+        const lastIndex = this.elements.todoInputs.length - 1;
+
+        for (let currentIndex = index; currentIndex < lastIndex; currentIndex++) {
+            this.elements.todoInputs[currentIndex].value = this.elements.todoInputs[currentIndex + 1].value;
+            this.elements.todoCheckboxes[currentIndex].checked = this.elements.todoCheckboxes[currentIndex + 1].checked;
+            this.updateTodoItemVisual(currentIndex);
+        }
+
+        this.elements.todoInputs[lastIndex].value = '';
+        this.elements.todoCheckboxes[lastIndex].checked = false;
+        this.updateTodoItemVisual(lastIndex);
+
+        const focusIndex = Math.min(index, lastIndex);
+        this.elements.todoInputs[focusIndex].focus();
+        this.elements.todoInputs[focusIndex].setSelectionRange(
+            this.elements.todoInputs[focusIndex].value.length,
+            this.elements.todoInputs[focusIndex].value.length
+        );
+
+        this.saveToLocalStorage();
+    }
+
+    /**
+     * Get the current todo list state from the UI
+     */
+    getTodoListState() {
+        return this.elements.todoInputs.map((input, index) => ({
+            text: input.value,
+            completed: this.elements.todoCheckboxes[index]?.checked || false,
+        }));
+    }
+
+    /**
+     * Load the todo list state into the UI
+     */
+    loadTodoListState(todoList = []) {
+        this.elements.todoInputs.forEach((input, index) => {
+            const todo = todoList[index] || { text: '', completed: false };
+            const checkbox = this.elements.todoCheckboxes[index];
+
+            input.value = todo.text || '';
+            if (checkbox) {
+                checkbox.checked = !!todo.completed;
+            }
+            this.updateTodoItemVisual(index);
+        });
     }
 
     /**
@@ -353,6 +447,7 @@ class PomodoroTimer {
             workDuration: this.workDuration,
             breakDuration: this.breakDuration,
             chimeSound: this.chimeSound,
+            todoList: this.getTodoListState(),
             savedAt: Date.now(),
         };
         localStorage.setItem('pomodoroState', JSON.stringify(state));
@@ -412,6 +507,7 @@ class PomodoroTimer {
                     this.isWorkSession = state.isWorkSession;
                     this.sessionsCompleted = state.sessionsCompleted;
                     this.totalDuration = this.isWorkSession ? this.workDuration : this.breakDuration;
+                    this.loadTodoListState(state.todoList || []);
 
                     // Adjust time based on elapsed time
                     if (state.isRunning) {
@@ -427,10 +523,14 @@ class PomodoroTimer {
                         this.elements.chimeSoundSelect.value = this.chimeSound;
                     }
                     this.elements.sessionsCompleted.textContent = this.sessionsCompleted;
+                } else {
+                    this.loadTodoListState();
                 }
             } catch (e) {
                 console.log('Error loading from localStorage:', e);
             }
+        } else {
+            this.loadTodoListState();
         }
     }
 }
